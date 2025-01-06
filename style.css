@@ -1,0 +1,99 @@
+html{
+    box-sizing: border-box;
+    height: 100%;
+}
+
+:root{
+    --background-color: #A4A4A4;
+    --screen-color: #9dc183;
+    --body-color: #555555;
+    --number-color: #050505;
+    --operator-color: #F4F4F4;
+    --primary-text-color: #F4F4F4;
+    --secondary-text-color: #050505;
+    --primary-linear-gradient-color: linear-gradient(130deg, #5C2774, #335CC5, #637FFD);
+}
+
+*, 
+*::before,
+*::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    align-items: center;
+    background: var(--background-color);
+    display: flex;
+    font-family: 'Arial', Helvetica, sans-serif;
+    font-display: swap;
+    height: inherit;
+    justify-content: center;
+}
+
+.wrapper{
+    background: var(--body-color);
+    color: var(--primary-text-color);
+    flex-basis: 400px;
+    height: 540px;
+    padding: 20px 35px;
+}
+
+#display{
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background: var(--body-color);
+    border: var(--body-color);
+    border-bottom: 2px solid var(--secondary-text-color);
+    color: var(--primary-text-color);
+    font-size: 35px;
+    overflow: auto;
+    padding: 20px;
+    text-align: right;
+    width: 326px;
+}
+
+.calc-button-row{
+    display: flex;
+    justify-content: space-between;
+    margin: 5% 0;
+}
+
+.calc-button{
+    background: var(--number-color);
+    border: 1px solid var(--number-color);
+    border-radius: 16px;
+    color: var(--primary-text-color);
+    flex-basis: 20%;
+    font-family: inherit;
+    font-size: 24px;
+    height: 65px;
+}
+
+.calc-button:last-child{
+    background: var(--operator-color);
+    color: var(--secondary-text-color);
+}
+
+.calc-button:last-child:hover{
+    background: inherit;
+    color: inherit;
+}
+
+.calc-button:last-child:active{
+    background-color: var(--number-color);
+}
+
+.calc-button:hover{
+    background-color: inherit;
+}
+
+.calc-button:active{
+    background-color: var(--operator-color);
+    color: var(--secondary-text-color);
+}
+
+.double{
+    flex-basis: 47%;
+}
