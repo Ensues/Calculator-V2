@@ -1,90 +1,75 @@
-let runningTotal = 0;
-let buffer = "0";
-let previousOperator;
+// Get the screen element
+const screen = document.getElementById('screen');
 
-const screen = document.querySelector('.screen');
+// Initialize variables
+let currentNumber = '';
+let previousNumber = '';
+let operation = '';
 
-function buttonClick(value){
-    if(isNaN(value)){
-        handleSymbol(value);
-    }else{
-        handleNumber(value);
-    }
-    screen.innerText = buffer;
+// Function to update the screen
+function updateScreen(content) {
+    screen.textContent = content;
 }
 
-function handleSymbol(symbol){
-    switch(symbol){ 
-        case 'C':
-            buffer = "0";
-            runningTotal = 0;
-            break;
-        case '=':
-            if(previousOperator === null){
-                return;
-            }
-            flushOperation(parseInt(buffer));
-            previousOperator = null;
-            buffer = runningTotal;
-            runningTotal = 0;
-            break;
-        case '←':
-            if(buffer.length === 1){
-                buffer = '0';
-            }else{
-                buffer = buffer.substring(0, buffer.length - 1);
-            }
-            break;
-        case '+':
-        case '−':
-        case '×':
-        case '÷':
-            handleMath(symbol);
-            break;
-    }
-}
+// Function to handle button clicks
+function handleButtonClick(event) {
+    const buttonId = event.target.id;
 
-function handleMath(symbol){
-    if(buffer === '0'){
-        return;
+    // Handle number buttons
+    const numberButtons = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+    if (numberButtons.includes(buttonId)) {
+        const number = buttonId.replace('zero', '0').replace('one', '1').replace('two', '2').replace('three', '3').replace('four', '4').replace('five', '5').replace('six', '6').replace('seven', '7').replace('eight', '8').replace('nine', '9');
+        currentNumber += number;
+        updateScreen(previousNumber + ' ' + operation + ' ' + currentNumber); // Display both numbers and operation
     }
 
-    const intBuffer = parseInt(buffer);
-
-    if(runningTotal === 0){
-        runningTotal = intBuffer;
-    }else{
-        flushOperation(intBuffer);
+    // Handle operation buttons
+    const operationButtons = ['add', 'subtract', 'multiply', 'divide'];
+    if (operationButtons.includes(buttonId)) {
+        if (currentNumber !== '') {
+            previousNumber = currentNumber;
+            currentNumber = '';
+            operation = buttonId.replace('add', '+').replace('subtract', '-').replace('multiply', '*').replace('divide', '/');
+            updateScreen(previousNumber + ' ' + operation); // Display the first number and operation
+        }
     }
-    previousOperator = symbol;
-    buffer = '0';
-}
 
-function flushOperation(intBuffer){
-    if(previousOperator === '+'){
-        runningTotal += intBuffer;
-    }else if(previousOperator === '−'){
-        runningTotal -= intBuffer;
-    }else if(previousOperator === '×'){
-        runningTotal *= intBuffer;
-    }else if(previousOperator === '÷'){
-        runningTotal /= intBuffer;
+    // Handle equals button
+    if (buttonId === 'equals') {
+        if (previousNumber !== '' && currentNumber !== '' && operation !== '') {
+            const result = eval(previousNumber + operation + currentNumber);
+            updateScreen(result);
+            previousNumber = '';
+            currentNumber = '';
+            operation = '';
+        }
+    }
+
+    // Handle clear button
+    if (buttonId === 'clear') {
+        currentNumber = '';
+        previousNumber = '';
+        operation = '';
+        updateScreen('0');
+    }
+
+    // Handle backspace button
+    if (buttonId === 'backspace') {
+        currentNumber = currentNumber.slice(0, -1);
+        updateScreen(previousNumber + ' ' + operation + ' ' + currentNumber); // Update screen after backspace
+    }
+
+    // Handle decimal button
+    if (buttonId === 'decimal') {
+        if (!currentNumber.includes('.')) {
+            currentNumber += '.';
+            updateScreen(previousNumber + ' ' + operation + ' ' + currentNumber); // Update screen with decimal
+        }
     }
 }
 
-function handleNumber(numberString){
-    if(buffer === '0'){
-        buffer = numberString;
-    }else{
-        buffer += numberString;
-    }
-}
-
-function init(){
-    document.querySelector.apply('.calc-buttons').
-    addEventListener('click', function(event){
-        buttonClick(event.target.innerText)
-    })
-}
-
-init();
+// Add event listeners
+const buttons = document.querySelectorAll('.calc-button');
+buttons.forEach(button => {
+    button.addEventListener('click', handleButtonClick);
+});
