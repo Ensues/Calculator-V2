@@ -1,31 +1,31 @@
-// Clear the display
 function clearDisplay() {
-    document.getElementById('display').value = '';
+    document.getElementById('display').value = '0';
 }
 
-// Append a value to the display
 function appendToDisplay(value) {
     const display = document.getElementById('display');
-    if (display.value === 'Error' || display.value === 'undefined') {
+    if(display.value === 'Error' || display.value === 'undefined') {
         clearDisplay();
+    }else if(display.value === '0'){
+        display.value = '';
     }
     display.value += value;
 }
 
-// Remove the last character from the display
 function backspace() {
     const display = document.getElementById('display');
     display.value = display.value.slice(0, -1);
+    if(display.value === ''){
+        display.value = '0';
+    }
 }
 
-// Calculate the result of the expression
 function calculate() {
     const display = document.getElementById('display');
-    try {
-        // Evaluate the expression
+    try{
         let result = eval(display.value);
         display.value = result;
-    } catch (error) {
+    }catch (error) {
         display.value = 'Error';
     }
 }
