@@ -1,12 +1,4 @@
 
-$('.calculator').addClass('pre-enter');
-setTimeout(() => {
-    $('.calculator').addClass('on-enter');
-}, 500);
-
-setTimeout(() => {
-    $('.calculator').removeClass('pre-enter on-enter')
-}, 2000);
 
 var $keys = $('button');
 var $total = $('.total');
@@ -32,7 +24,7 @@ $keys.click(function () {
     else if (keyVal == '=') {
         output = output.replace(/×/g, '*').replace(/÷/g, '/');
         if (operators.indexOf(lastChar) > -1 || lastChar == '.')
-            output = output.replace(/.$/, '');
+            return;
         if (output) {
             $total.html(Math.round(eval(output) * 10000000) / 10000000);
         }
