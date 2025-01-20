@@ -1,12 +1,13 @@
 :root{
     --background-color: #7c7c7c;
     --body-color: #333;
+    --equation-color: #b3b3b3;
+    --btn-hover: #555;
     --border-color: #000;
     --primary-btn-color: #000;
     --secondary-btn-color: #fff;
     --tertiary-btn-color: #ff8844;
     --active-btn-color: #ff0000;
-
 }
 
 body {
@@ -33,14 +34,14 @@ body {
     height: 22px;
     font-size: 16px;
     font-weight: 500;
-    color: #b3b3b3;
-  }
+    color: var(--equation-color);
+}
 .calculator .total {
     padding: 3px 6px 6px;
     font-size: 32px;
     color: var(--secondary-btn-color);
     margin-bottom: 10px;
-  }
+}
 
 .buttons {
     display: grid;
@@ -49,8 +50,7 @@ body {
 }
 
 button {
-    background-color: #444;
-    color: #fff;
+    color: var(--secondary-btn-color);
     border: none;
     padding: 20px;
     font-size: 18px;
@@ -60,7 +60,7 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: var(--btn-hover);
 }
 
 /* Specific styles for button classes */
@@ -73,12 +73,12 @@ button:hover {
 
 .number,
 .decimal{
-    background-color: #000;
+    background-color: var(--primary-btn-color);
 }
 
 .equals {
-    background-color: #ff8844;
-    color: #000;
+    background-color: var(--tertiary-btn-color);
+    color: var(--primary-btn-color);
 }
 
 .clear {
