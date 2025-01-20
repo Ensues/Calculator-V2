@@ -1,31 +1,75 @@
-function clearDisplay() {
-    document.getElementById('display').value = '0';
-}
 
-function appendToDisplay(value) {
-    const display = document.getElementById('display');
-    if(display.value === 'Error' || display.value === 'undefined') {
-        clearDisplay();
-    }else if(display.value === '0'){
-        display.value = '';
-    }
-    display.value += value;
-}
+$('.calculator').addClass('pre-enter');
+setTimeout(() => {
+    $('.calculator').addClass('on-enter');
+}, 500);
 
-function backspace() {
-    const display = document.getElementById('display');
-    display.value = display.value.slice(0, -1);
-    if(display.value === ''){
-        display.value = '0';
-    }
-}
+setTimeout(() => {
+    $('.calculator').removeClass('pre-enter on-enter')
+}, 2000);
 
-function calculate() {
-    const display = document.getElementById('display');
-    try{
-        let result = eval(display.value);
-        display.value = result;
-    }catch (error) {
-        display.value = 'Error';
+var $keys = $('button');
+var $total = $('.total');
+var $summary = $('.summary');
+var decimal = false;
+var operators = ['+', '-', '×', '÷'];
+
+$keys.click(function () {
+    var keyVal = $(this).data('val');
+    output = $summary.html();
+    var lastChar = output[output.length - 1];
+
+    if (keyVal == 'clear') {
+        $total.html('0');
+        $summary.html('');
+        decimal = false;
     }
-}
+    else if (keyVal == '←') {
+        if (output.length > 0) {
+            $summary.html(output.slice(0, -1));
+        }
+    }
+    else if (keyVal == '=') {
+        output = output.replace(/×/g, '*').replace(/÷/g, '/');
+        if (operators.indexOf(lastChar) > -1 || lastChar == '.')
+            output = output.replace(/.$/, '');
+        if (output) {
+            $total.html(Math.round(eval(output) * 10000000) / 10000000);
+        }
+        $summary.addClass('complete');
+        decimal = false;
+    }
+    else if ($(this).hasClass('operator')) {
+        if ($summary.is('.complete')) {
+            $summary.removeClass('complete');
+        }
+        if (output !== '' && operators.indexOf(lastChar) === -1) {
+            $summary.html($summary.html() + keyVal);
+        } else if (output === '' && keyVal === '-') {
+            $summary.html($summary.html() + keyVal);
+        } else if (operators.indexOf(lastChar) > -1) {
+            $summary.html(output.slice(0, -1) + keyVal);
+        }
+        decimal = false;
+    }
+    else if (keyVal == '.') {
+        if ($summary.is('.complete')) {
+            $summary.html('0' + keyVal);
+            $summary.removeClass('complete');
+        } else if (output == '') {
+            $summary.html('0' + keyVal);
+        } else {
+            const lastNumber = output.split(/[\+\-\×\÷]/).pop();
+            if (!lastNumber.includes('.')) {
+                $summary.html($summary.html() + keyVal);
+            }
+        }
+    } else {
+        if ($summary.is('.complete')) {
+            $summary.html(keyVal);
+            $summary.removeClass('complete');
+        } else {
+            $summary.html($summary.html() + keyVal);
+        }
+    }
+});
